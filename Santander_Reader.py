@@ -87,17 +87,18 @@ class santander_reader:
                 if "-" in line:
                     return True
 
-        info_start = 0
-        info_end = 0
-
+        info_start = -1
+        info_end = -1
         self.rawMonthlyTransfers = []
+        
 
         print("Reading file")
-        #rawMonthlyTransfers = []
-        #input File Sanatation
+       
 
+        #input File Sanatation
         for j in range(len(text)):
             text[j] = text[j].replace("\n","")
+
 
         #looks for date information
         for j in range(len(text)):
@@ -107,23 +108,30 @@ class santander_reader:
                 self.startDate = date_Line[2].split("/")
                 self.endDate = date_Line[4].split("/")
                 break 
+        if self.startDate == [0,0,0]:
+            raise Exception("Improper Format, expected 'Statement Period'")
                 
                 
         #looks for Account number
         for j in range(len(text)):
             if "Account #" in text[j]:
                 self.accountNum = text[j].split(" ")[2]
+                break
 
         #looks for where to start and end data collection.
         for j in range(len(text)):
             if "Beginning Balance" in text[j]:
                 info_start = j + 1
                 break
+        if  info_start == -1:
+            raise Exception("Improper Format, expected 'Beginning Balance'") 
 
         for j in range(len(text)):
             if "Ending Balance" in text[j]:
                 info_end = j
                 break
+        if  info_end == -1:
+            raise Exception("Improper Format, expected 'Ending Balance'")
 
         #filter & save data
         for j in range(info_start,info_end):
