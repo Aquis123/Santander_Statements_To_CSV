@@ -19,7 +19,7 @@ class santander_reader:
         self.startDate = [0,0,0]
         self.endDate = [0,0,0]
 
-        self.deposit_words = ["PAYROLL","DEPOSIT","REFUND"]
+        self.deposit_words = ["PAYROLL","DEPOSIT","REFUND","INVOICE"]
         
         self.statement_num = 0
         
